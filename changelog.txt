@@ -1,7 +1,26 @@
-1.8.0
+1.9.2 (wuff)
+- Replace xbmc.translatePath with xbmcvfs.translatePath for Kodi 19
+
+1.9.1 (wuff)
+- Fix extracting archives
+- Fix filename search (StefanRvO)
+- Remove python requirement for backward compatibility pre Kodi 19
+
+1.9.0 (jarmo)
+- Kodi 19 only release
+
+1.8.2 (wuff)
+- Fix python 3 tv show subtitle search
+
+1.8.1 (wuff)
+- Kodi 19 / Python 3 compatibility
+- Add line break after subtitle title and before subtitle comments 
+- Change comment colour to silver for improved contrast of selected entries
+
+1.8.0 (jarmo)
 - fix searching for subtitles
 
-1.7.1
+1.7.1 (CrowleyAJ)
 - better download handling
 
 1.7.0
