@@ -1,3 +1,6 @@
+1.9.3 (wuff)
+- Fix unicode issue in language preferences
+
 1.9.2 (wuff)
 - Replace xbmc.translatePath with xbmcvfs.translatePath for Kodi 19
 
@@ -20,10 +23,10 @@
 1.8.0 (jarmo)
 - fix searching for subtitles
 
-1.7.1 (CrowleyAJ)
+1.7.1 (manacker)
 - better download handling
 
-1.7.0
+1.7.0 (manacker)
 - improved title matching
 
 1.6.0

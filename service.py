@@ -585,7 +585,7 @@ if params['action'] == 'search' or params['action'] == 'manualsearch':
                 item['3let_language'].append(xbmc.convertLanguage(lang, xbmc.ISO_639_2))
         else:
             for lang in urllib.unquote(params['languages']).decode('utf-8').split(","):
-                item['3let_language'].append(xbmc.convertLanguage(lang, xbmc.ISO_639_2))
+                item['3let_language'].append(xbmc.convertLanguage(lang.decode('utf-8'), xbmc.ISO_639_2))
 
     if sys.version_info.major == 3:
         item['file_original_path'] = urllib.parse.unquote(xbmc.Player().getPlayingFile())  # Full path
