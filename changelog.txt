@@ -1,3 +1,7 @@
+1.9.4 (wuff)
+- Adjust windows/linux path when extracting on Kodi19 
+- replace deprecated HTMLParser.unescape with html.unescape for Kodi19 
+
 1.9.3 (wuff)
 - Fix unicode issue in language preferences
 
