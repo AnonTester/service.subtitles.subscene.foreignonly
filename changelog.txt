@@ -1,3 +1,11 @@
+1.9.6
+- add OS dependent extraction method (Windows fix) (wuff)
+- add more debug info (wuff)
+
+1.9.5
+- adjust download function (wuff)
+- update provider-detail and readme
+
 1.9.4 (wuff)
 - Adjust windows/linux path when extracting on Kodi19 
 - replace deprecated HTMLParser.unescape with html.unescape for Kodi19 
