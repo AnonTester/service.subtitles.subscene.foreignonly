@@ -1,9 +1,13 @@
-1.9.6
-- add OS dependent extraction method (Windows fix) (wuff)
-- add more debug info (wuff)
+1.9.7 (wuff)
+- add Android platform check to extraction method
+- add icon to addons.xml
 
-1.9.5
-- adjust download function (wuff)
+1.9.6 (wuff)
+- add OS dependent extraction method (Windows fix)
+- add more debug info
+
+1.9.5 (wuff)
+- adjust download function
 - update provider-detail and readme
 
 1.9.4 (wuff)
