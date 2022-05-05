@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import os, sys
+import sys
 import gzip
 import time
 if sys.version_info.major == 3:
@@ -8,6 +8,7 @@ else:
     from StringIO import StringIO
     import urllib2
 import xbmc
+import json
 import re
 
 subscene_languages = {
@@ -53,6 +54,39 @@ subscene_languages = {
 }
 
 
+def get_setting(name):
+    """
+    Get Kodi setting
+    :param name: id of the setting.
+        Example:
+    :type name: str
+    :return: string value of the setting
+    :rtype: str
+    """
+
+    command = '{"jsonrpc":"2.0", "id":1, ' \
+              '"method":"Settings.GetSettingValue",' \
+              '"params":{"setting":"' + name + '"}}'
+    try:
+        response = xbmc.executeJSONRPC(command)
+    except Exception as e:
+        xbmc.log("### [%s] - %s" % (module, "Couldn't execute JSON-RPC",), level=xbmc.LOGWARNING)
+        xbmc.log("### [%s] - %s" % (module, str(e),), level=xbmc.LOGWARNING)
+        return
+    try:
+        data = json.loads(response)
+    except Exception as e:
+        xbmc.log("### [%s] - %s" % (module, "Couldn't parse JSON response",), level=xbmc.LOGWARNING)
+        xbmc.log("### [%s] - %s" % (module, str(e),), level=xbmc.LOGWARNING)
+        return None
+
+    result = data.get("result")
+    if result:
+        return result.get("value")
+    else:
+        return None
+
+
 def get_language_codes(languages):
     codes = {}
     for lang in subscene_languages:
@@ -84,8 +118,13 @@ subscene_start = time.time()
 
 def log(module, msg):
     global subscene_start
-#    loglevel=xbmc.LOGDEBUG
-    loglevel=xbmc.LOGWARNING
+    if get_setting("log_level")=="debug":
+        # set all logging to LOGWARNING to be included in Kodi log
+        loglevel=xbmc.LOGWARNING
+    else:
+        # set logging to debug to only log output when Kodi is set to DEBUG
+        loglevel=xbmc.LOGDEBUG
+
     if sys.version_info.major == 3:
         xbmc.log("### [%s] %f - %s" % (module, time.time() - subscene_start, msg,), level=loglevel)
     else:
@@ -102,7 +141,8 @@ def geturl(url, cookies=None):
         request.add_header('Accept-encoding', 'gzip')
         if cookies:
             request.add_header('Cookie', cookies)
-        request.add_header('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:41.0) Gecko/20100101 Firefox/41.0')
+        # request.add_header('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:41.0) Gecko/20100101 Firefox/41.0')
+        request.add_header('User-Agent', 'Mozilla/5.0 (X11; Linux x86_64; rv:99.0) Gecko/20100101 Firefox/99.0')
         if sys.version_info.major == 3:
             response = urllib.request.urlopen(request)
         else:
@@ -115,18 +155,21 @@ def geturl(url, cookies=None):
                 buf = StringIO(response.read())
                 f = gzip.GzipFile(fileobj=buf)
             content = f.read()
-            #content is binary, decoding into string
+            # content is binary, decoding into string
             content = content.decode("utf-8")
         else:
             content = response.read()
         log(__name__, "read done")
+        log(__name__, "content:\n%s" % content)
         # Fix non-unicode characters in movie titles
         strip_unicode = re.compile("([^-_a-zA-Z0-9!@#%&=,/'\";:~`\$\^\*\(\)\+\[\]\.\{\}\|\?<>\\]+|[^\s]+)")
         content = strip_unicode.sub('', content)
         return_url = response.geturl()
+        log(__name__, "return_url:\n%s" % return_url)
         log(__name__, "fetching done")
     except:
         log(__name__, "Failed to get url: %s" % url)
         content = None
         return_url = None
     return content, return_url
+
